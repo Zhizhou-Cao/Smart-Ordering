@@ -9,7 +9,11 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "需要访问相册来上传菜单照片",
+        "NSCameraUsageDescription": "需要使用相机来拍摄菜单"
+      }
     },
     "android": {
       "adaptiveIcon": {

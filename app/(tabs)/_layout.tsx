@@ -1,8 +1,8 @@
-import { Tabs } from 'expo-router';
 import React from 'react';
+import { Text } from 'react-native';
+import { Tabs } from 'expo-router';
 
 import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
@@ -11,23 +11,31 @@ export default function TabLayout() {
 
   return (
     <Tabs
+      initialRouteName="index"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
         tabBarButton: HapticTab,
       }}>
       <Tabs.Screen
-        name="index"
+        name="profile"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: '我的',
+          tabBarIcon: () => <Text style={{ fontSize: 18 }}>⚙️</Text>,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="index"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: '点餐',
+          tabBarIcon: () => <Text style={{ fontSize: 18 }}>🍽️</Text>,
+        }}
+      />
+      <Tabs.Screen
+        name="friends"
+        options={{
+          title: '好友',
+          tabBarIcon: () => <Text style={{ fontSize: 18 }}>👥</Text>,
         }}
       />
     </Tabs>
