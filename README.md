@@ -1,50 +1,63 @@
-# Welcome to your Expo app 👋
+# 🍽️ 智能点餐助手 Smart Ordering
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+基于 AI 的个性化菜品推荐 App —— 拍一张菜单照片，结合你和同桌人的饮食偏好，自动生成专属点餐建议。
 
-## Get started
+## 功能特性
 
-1. Install dependencies
+- 📸 **拍照识别菜单** — 上传菜单图片，AI 自动识别所有菜品
+- 🎯 **个性化推荐** — 基于口味偏好、过敏食材、饮食类型综合分析
+- 👥 **多人协同点餐** — 综合所有同桌人的偏好与禁忌，找到最优解
+- 👫 **好友档案管理** — 保存常用好友饮食偏好，点餐时一键选择
+- 🃏 **随机推荐** — 不知道吃什么时，卡片滑动随机推荐，右滑收藏
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+## 技术架构
+```
+前端：React Native + Expo（支持 iOS / Android / Web）
+AI 后端：Dify 工作流
+  ├── 图像识别：chatgpt-5.2（菜单图片解析）
+  └── 推理分析：gpt-4o-mini（偏好匹配与推荐生成）
+本地存储：AsyncStorage
+路由：Expo Router
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 本地运行
 
-## Learn more
+**1. 安装依赖**
+```bash
+npm install
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+**2. 配置环境变量**
+```bash
+cp .env.example .env
+```
+在 `.env` 里填入你的 Dify API Key：
+```
+EXPO_PUBLIC_DIFY_API_KEY=你的Key
+EXPO_PUBLIC_DIFY_API_URL=https://api.dify.ai/v1/workflows/run
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+**3. 启动**
+```bash
+npx expo start
+```
+用手机扫码通过 Expo Go 预览，或按 `w` 打开网页版。
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 项目结构
+```
+app/
+├── (tabs)/          # 底部导航三个 Tab
+│   ├── index.tsx    # 我的偏好设置
+│   ├── order.tsx    # 点餐主页
+│   └── friends.tsx  # 好友档案
+├── order/
+│   ├── upload.tsx   # 菜单上传
+│   ├── people.tsx   # 用餐人选择 + 调用 AI
+│   ├── result.tsx   # 推荐结果展示
+│   └── random.tsx   # 卡片滑动随机推荐
+├── api/
+│   ├── upload+api.ts    # 图片上传代理
+│   └── recommend+api.ts # 工作流调用代理
+constants/
+└── menuDatabase.ts  # 本地菜品数据库
+```
