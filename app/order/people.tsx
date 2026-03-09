@@ -203,25 +203,43 @@ export default function PeopleScreen() {
     try {
       setLoading(true);
 
-      const [prefsRaw] = await Promise.all([
+      const [prefsRaw, friendsStr] = await Promise.all([
         AsyncStorage.getItem(STORAGE_KEYS.userPreferences),
+        AsyncStorage.getItem(STORAGE_KEYS.friends),
       ]);
       const prefs: UserPreferences | null = prefsRaw ? JSON.parse(prefsRaw) : null;
+      const allFriends: FriendProfile[] = friendsStr ? JSON.parse(friendsStr) : [];
       const peopleCountNum = calcPeopleCount();
       const myPreferenceStr = buildMyPreferenceWithCount(prefs, peopleCountNum);
 
-      // 单人用餐时必须传空字符串，避免 Dify 误判为多人
-      const selectedFriendsNames = mode === 'single' ? '' : friends
-        .filter((f) => selectedFriendIds.includes(f.id))
-        .map((f) => f.name)
-        .join('、');
+      // 单人用餐时传空；多人时从 AsyncStorage 读出选中好友的完整偏好拼成文字
+      let selectedFriendDetails = '';
+      if (mode === 'multi' && selectedFriendIds.length > 0) {
+        const selectedFriendObjects = allFriends.filter((f) =>
+          selectedFriendIds.includes(f.id),
+        );
+        selectedFriendDetails = selectedFriendObjects
+          .map((friend: FriendProfile) => {
+            const parts: string[] = [];
+            if (friend.taste?.length) parts.push(`口味偏好：${friend.taste.join('、')}`);
+            if (friend.diet?.length) parts.push(`饮食类型：${friend.diet.join('、')}`);
+            if (friend.allergies?.length && !friend.allergies.includes('无')) {
+              parts.push(`过敏食材：${friend.allergies.join('、')}`);
+            }
+            if (friend.dislike) parts.push(`不喜欢：${friend.dislike}`);
+            if (friend.notes) parts.push(`备注：${friend.notes}`);
+            return `【${friend.name}】${parts.length ? parts.join('；') : '无详细信息'}`;
+          })
+          .join('\n');
+        console.log('好友完整偏好：', selectedFriendDetails);
+      }
       const tempCompanionsForApi = mode === 'single' ? '' : tempPreference;
 
       const uploadId = await uploadImageToDify(imageUri);
       const recommendationText = await callDifyWorkflow(
         uploadId,
         myPreferenceStr,
-        selectedFriendsNames,
+        selectedFriendDetails,
         tempCompanionsForApi,
       );
 

@@ -17,6 +17,8 @@ import { STORAGE_KEYS } from '@/constants/storage';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.25;
+const CARD_WIDTH = Math.min(SCREEN_WIDTH * 0.85, 420);
+const CARD_HEIGHT = CARD_WIDTH * 1.1;
 
 export default function RandomCardsScreen() {
   const { allAllergens: allAllergensParam, isVegetarian: isVegetarianParam } =
@@ -295,8 +297,8 @@ const styles = StyleSheet.create({
   hintRow: { flexDirection: 'row', justifyContent: 'space-between', width: '85%', marginTop: 16, marginBottom: 8 },
   hint: { color: '#999', fontSize: 13 },
   cardArea: {
-    width: SCREEN_WIDTH * 0.85,
-    height: SCREEN_WIDTH * 1.1,
+    width: CARD_WIDTH,
+    height: CARD_HEIGHT,
     marginTop: 8,
     position: 'relative',
     alignItems: 'center',
@@ -352,6 +354,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'flex-end',
+    zIndex: 10,
+    elevation: 10,
   },
   savedModalContent: {
     backgroundColor: 'white',
