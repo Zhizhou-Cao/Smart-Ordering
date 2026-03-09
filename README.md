@@ -25,6 +25,11 @@
 - **好友信息共享** - 加好友直接共享饮食偏好习惯
 - **知识库接入** - 特殊情况(生病，减肥等），采用科学饮食
 
+## 产品说明
+<div align="center">
+ <img src="assets/screenshots/prd.jpg" width="80%"/>
+</div>
+
 ## 技术架构
 ```
 前端：React Native + Expo（支持 iOS / Android / Web）
@@ -34,6 +39,7 @@ AI 后端：Dify 工作流
 本地存储：AsyncStorage
 路由：Expo Router
 ```
+
 
 ## 本地运行
 
