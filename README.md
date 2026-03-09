@@ -9,6 +9,15 @@
 - 👥 **多人协同点餐** — 综合所有同桌人的偏好与禁忌，找到最优解
 - 👫 **好友档案管理** — 保存常用好友饮食偏好，点餐时一键选择
 - 🃏 **随机推荐** — 不知道吃什么时，卡片滑动随机推荐，右滑收藏
+## 界面预览
+
+<div align="center">
+  <img src="assets/screenshots/preferences.jpg" width="22%" />
+  <img src="assets/screenshots/friends.jpg" width="22%" />
+  <img src="assets/screenshots/result.jpg" width="22%" />
+  <img src="assets/screenshots/random.jpg" width="22%" />
+</div>
+
 
 ## 未来功能
 - **接入实时地理位置** - 更精准的餐厅定位和随机推荐，省去手动上传菜单步骤
