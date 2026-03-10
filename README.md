@@ -39,7 +39,13 @@ AI 后端：Dify 工作流
 本地存储：AsyncStorage
 路由：Expo Router
 ```
+## AI 工作流架构
+<div align="center">
+ <img src="assets/screenshots/whole-workflow.png" width="80%"/>
+</div>
 
+> 工作流 DSL 文件在 `/dify` 目录，
+> 导入 Dify 即可直接使用。
 
 ## 本地运行
 
