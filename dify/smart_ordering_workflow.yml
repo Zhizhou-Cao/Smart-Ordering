@@ -1,0 +1,335 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FEF7C3'
+  mode: workflow
+  name: 智能菜品推荐
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai:0.2.8@aae2be0913b8c6f0b80cff58e08d7a8b4c214569b41778413fcaea204561ff16
+    version: null
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 50
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: 1772619296608-source-1772620636001-target
+      selected: false
+      source: '1772619296608'
+      sourceHandle: source
+      target: '1772620636001'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1772617503354-source-1772618489021-target
+      source: '1772617503354'
+      sourceHandle: source
+      target: '1772618489021'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 1772618489021-source-1772619296608-target
+      source: '1772618489021'
+      sourceHandle: source
+      target: '1772619296608'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 用户输入
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - image
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          default: ''
+          hint: ''
+          label: 上传菜单照片
+          options: []
+          placeholder: ''
+          required: true
+          type: file
+          variable: menu_image
+        - default: 我不吃香菜、海鲜过敏、喜欢川菜口味、不吃内脏
+          hint: ''
+          label: 我的饮食偏好
+          options: []
+          placeholder: ''
+          required: true
+          type: text-input
+          variable: my_preference
+        - default: 临时同桌人的饮食要求，没有可以不填
+          hide: false
+          hint: ''
+          label: group_preference
+          options: []
+          placeholder: ''
+          required: false
+          type: paragraph
+          variable: temp_companions
+        - default: 从好友档案选人，填名字，如：小红、小明
+          hint: ''
+          label: selected_friends
+          options: []
+          placeholder: ''
+          required: false
+          type: text-input
+          variable: selected_friends
+      height: 187
+      id: '1772617503354'
+      position:
+        x: 0
+        y: 0
+      positionAbsolute:
+        x: 0
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            frequency_penalty: 0.5
+            presence_penalty: 0.5
+            temperature: 0.2
+            top_p: 0.75
+          mode: chat
+          name: gpt-5.2
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: 6ab5c7e9-7379-4cf0-bfa7-7f5920c6f1f6
+          role: system
+          text: "角色：你是一个专业的餐厅菜单数字化助手。\n任务：\n字面提取（严格）：从图中识别菜名。必须严格按照字符提取，禁止修正。如果看不清则跳过该菜品。\n\
+            专家分析（知识推理）：基于识别出的菜名，利用你的美食知识储备，补全该菜品的分类、口味和主要食材。\n\nJSON 输出规范（必须严格遵守此结构）：\n\
+            [\n  {\n    \"name\": \"图片上的原始菜名\",\n    \"category\": \"分类（肉类/海鲜/蔬菜/主食/汤品）\"\
+            ,\n    \"flavors\": [\"口味1\", \"口味2\"],\n    \"ingredients\": [\"主要食材1\"\
+            , \"主要食材2\"]\n  }\n]"
+        - id: 545df0ab-41f8-412a-8e05-9443b6cc8f0f
+          role: user
+          text: 请识别这张菜单图片中的所有菜品名称。 {{#1772617503354.menu_image#}}/
+        selected: false
+        structured_output_enabled: false
+        title: 识别菜单
+        type: llm
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - '1772617503354'
+            - menu_image
+          enabled: true
+      height: 88
+      id: '1772618489021'
+      position:
+        x: 342
+        y: 50
+      positionAbsolute:
+        x: 342
+        y: 50
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            frequency_penalty: 0.3
+            presence_penalty: 0.2
+            temperature: 0.5
+            top_p: 0.85
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: 1eed9a08-0522-4b2c-970e-b720819a6477
+          role: system
+          text: '你是一个专业的餐厅点餐顾问，擅长根据用户的饮食偏好推荐合适的菜品。
+
+            推荐时需要考虑：
+
+            1. 所有用户的口味偏好和饮食禁忌，严格回避用户的过敏食材和禁忌。每个推荐菜品必须包含一个【推荐理由】。
+
+            理由必须包含变量比对：明确说明该菜品如何符合 
+
+            本人饮食偏好： {{#1772617503354.my_preference#}}同桌人信息： {{#1772617503354.selected_friends#}} 临时同桌偏好： {{#1772617503354.temp_companions#}}
+
+
+            2. 禁止推测或假设未提及的禁忌， 只能使用用户明确告知的信息作为判断依据
+
+            示例：推荐“白菜粉条肉”，理由：命中您爱吃“炖菜”的偏好，且粉条易消化，符合同伴“肠胃弱”的限制。
+
+            3. 营养搭配均衡
+
+            4. 如果有多人用餐，优先推荐大家都能吃的菜
+
+            5. 根据人数建议合理的点菜数量
+
+
+
+            '
+        - id: ce383d21-12a4-4e07-bdfd-b2cb80193c0a
+          role: user
+          text: '菜单上的菜品如下：
+
+            {{#1772618489021.text#}}
+
+
+            具体信息：
+
+            本人饮食偏好： {{#1772617503354.my_preference#}}
+
+            同桌人信息： {{#1772617503354.selected_friends#}} 
+
+            临时同桌偏好： {{#1772617503354.temp_companions#}}
+
+            请给出推荐，用以下格式输出：
+
+
+            ## 🍽️ 用餐建议 （说明本次用餐人数和总体点餐搭配与建议数量）
+
+            （2-3句话说明整体搭配思路）
+
+
+            ## ✅ 强烈推荐
+
+            （列出菜品和推荐理由）
+
+
+            ## 👍 可以尝试
+
+            （列出菜品）
+
+
+            ## ⚠️ 谨慎选择 （说明需要注意的点）
+
+
+            ## ❌ 建议回避
+
+            （列出菜品和原因）
+
+
+            '
+        selected: true
+        title: 分析推荐
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1772619296608'
+      position:
+        x: 684
+        y: 50
+      positionAbsolute:
+        x: 684
+        y: 50
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - '1772619296608'
+          - text
+          value_type: string
+          variable: analyse_result
+        selected: false
+        title: 结束节点
+        type: end
+      height: 88
+      id: '1772620636001'
+      position:
+        x: 1026
+        y: 50
+      positionAbsolute:
+        x: 1026
+        y: 50
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: 0
+      y: 0
+      zoom: 0.7
+  rag_pipeline_variables: []
